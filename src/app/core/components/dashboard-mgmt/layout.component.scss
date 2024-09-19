@@ -1,0 +1,36 @@
+
+.sidenav-container {
+    height: 100%;
+
+    .mat-toolbar-single-row{
+        padding: 0;
+        height: 3rem;
+    }
+}
+
+.sidenav {
+    --mat-sidenav-container-divider-color: #CEDAE9;
+    border-width: 2px;
+    width: 300px;
+    background-color: white;
+    border-radius: 0%;
+    box-shadow: none;
+    @media only screen and (min-width:768px) {
+        width: 250px !important;
+    }
+}
+
+.sidenav .mat-toolbar{
+    background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.mdc-list {
+    padding: 8px 12px;
+    height: 100%;
+}

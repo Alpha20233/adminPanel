@@ -1,0 +1,26 @@
+<div
+    class="tw-bg-white tw-border tw-border-solid tw-border-stroke-100 tw-h-full tw-rounded-md tw-p-3 tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-y-3">
+    <h4 class="tw-text-text-100 tw-text-start tw-w-full tw-uppercase tw-text-sm tw-m-0 ">{{heading()}}</h4>
+    <div class="tw-relative tw-w-full tw-h-full">
+        <p-chart [type]="chartType()" [data]="data" [options]="options"
+            class="tw-flex tw-items-center tw-justify-center" />
+        <div
+            class="tw-absolute tw-top-1/2 tw-left-1/2 tw-transform -tw-translate-x-1/2 -tw-translate-y-1/2 tw-mt-2 tw-font-bold">
+            {{dataCount().slice().reverse()}}</div>
+    </div>
+
+    <div class="tw-flex tw-flex-col tw-gap-y-2 tw-w-full">
+        @for(c of chartData();track c){
+        <div class="tw-flex tw-items-center tw-justify-between *:tw-text-sm tw-w-full">
+            <span class="tw-text-text-100 tw-flex tw-items-center tw-gap-x-2">
+                <span class="tw-w-3 tw-flex tw-h-3 tw-rounded-sm"
+                    [ngStyle]="{'background-color': $index == 0 ? bgColor()[0] : $index == 1 ? bgColor()[1] : bgColor()[2]}"></span>
+                {{c.title}}
+            </span>
+            <span class="tw-font-bold">
+                {{c.value}}
+            </span>
+        </div>
+        }
+    </div>
+</div>

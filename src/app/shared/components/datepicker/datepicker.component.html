@@ -1,0 +1,45 @@
+<div class="tw-flex tw-flex-col tw-items-start">
+  <!--Date Input label-->
+  @if(datLabel()){
+    <label [attr.for]="datLabel()" class="tw-text-sm"
+      >{{ datLabel() }}
+      @if (isRequired()) {
+        <span class="tw-text-red-500">*</span>
+      }
+    </label>
+  }
+
+  <!--Prime ng Calendar -->
+  <div class="tw-relative tw-w-full">
+    <p-calendar
+      appendTo="body"
+      [disabled]="disabled()"
+      #calendar
+      readonlyInput
+      [maxDate]="max()"
+      [touchUI]="!(this.comm.isMobile() | async)"
+      dateFormat="dd/mm/yy"
+      (onSelect)="valChang($event)"
+      placeholder="Select Date Range"
+      styleClass="tw-w-full xl:tw-cursor-pointer "
+      inputStyleClass=" tw-p-1 tw-text-sm tw-text-black tw-rounded-md  tw-border-2 tw-border-stroke-100/70   placeholder:tw-text-[13px] placeholder:tw-text-slate-500 tw-px-2 tw-max-w-[12rem] !tw-shadow-none"
+      [showIcon]="false"
+      inputId="icondisplay"
+    />
+
+    <icon
+      name="calendar"
+      type="primary"
+      [addCls]="disabled() ? 'tw-opacity-30' : 'tw-text-slate-500'"
+      (click)="openCalendar()"
+      class="tw-absolute tw-right-0 tw-top-0 tw-flex tw-h-full tw-items-center tw-text-text-100 tw-justify-center tw-pr-3"
+    ></icon>
+  </div>
+
+  <!--Validation-->
+  @if (isValid().cond1 && isValid().form_submit && validText() && !disabled()) {
+    <div class="tw-text-sm tw-text-red-500">
+      {{ validText() }}
+    </div>
+  }
+</div>

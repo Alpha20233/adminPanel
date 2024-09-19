@@ -2,6 +2,7 @@ import { AsyncPipe, CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   model,
   OnInit,
   signal,
@@ -21,6 +22,7 @@ import { Router, RouterLink } from '@angular/router';
 
 import { CommService } from '../../../shared/services/common/comm.service';
 import { signup } from '../../models/auth.interface';
+import { IndexDBService } from '../../../shared/services/indexDB/index-db.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -40,12 +42,16 @@ import { signup } from '../../models/auth.interface';
   styleUrl: './sign-up.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignUpComponent implements OnInit{
+export class SignUpComponent implements OnInit {
   public frm!: FormGroup;
   public checked = model<boolean>(false);
   public form_submit = signal<boolean>(false);
 
-  constructor(public readonly comm: CommService,private readonly router: Router) { }
+  constructor(public readonly comm: CommService, private readonly router: Router, private readonly indexDB: IndexDBService) {
+    effect(() => {
+      this.frm.get('bCheck')?.setValue(this.checked(), { emitEvent: false });
+    });
+  }
 
   ngOnInit(): void {
     this.frm = new FormGroup({
@@ -57,15 +63,19 @@ export class SignUpComponent implements OnInit{
         ),
       ]),
       cPass: new FormControl('', Validators.required),
-      bCheck: new FormControl(this.checked, Validators.required),
+      bCheck: new FormControl(this.checked(), Validators.requiredTrue),
     });
+
+
   }
 
-  submit() {
+   async submit() {
+    debugger
     this.form_submit.set(true);
     if (this.frm.invalid) return;
     const formData: signup = this.frm.value;
-    if (true) {
+    const res = await this.indexDB.addUser(formData);
+    if (res) {
       this.form_submit.set(false);
       this.router.navigate(['/dashboard']);
       this.frm.reset();

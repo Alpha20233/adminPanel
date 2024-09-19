@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, signal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, Signal, ViewChild, viewChild } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AsyncPipe, CommonModule, NgOptimizedImage } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDrawer, MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -11,6 +11,8 @@ import { map, Observable, shareReplay } from 'rxjs';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { MenuItem } from '../../models/dashboard.interface';
+import { InsertUpdateComponent } from '../../../shared/components/insert-update/insert-update.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-layout',
@@ -19,7 +21,6 @@ import { MenuItem } from '../../models/dashboard.interface';
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
-    MatIconModule,
     AsyncPipe,
     IconComponent, NgOptimizedImage,
     DropdownModule,
@@ -33,7 +34,7 @@ import { MenuItem } from '../../models/dashboard.interface';
 export class LayoutComponent {
   menuItems = signal<MenuItem[]>(
     [
-      { route: '', name: 'Dashboard', iconName: 'home', active: true },
+      { route: '/dashboard', name: 'Dashboard', iconName: 'home', active: true },
       { route: '/dashboard/customer', name: 'Customers', iconName: 'building' },
       { route: '/dashboard/projects', name: 'Projects', iconName: 'folder' },
       { route: '/dashboard/services', name: 'Services', iconName: 'list' },
@@ -51,9 +52,15 @@ export class LayoutComponent {
     ]
   )
 
+  @ViewChild('drawer') drawer: any;
+
   private breakpointObserver = inject(BreakpointObserver);
 
-  constructor(private readonly route:Router){}
+  constructor(private readonly route: Router, private readonly dialog: MatDialog) { }
+
+  ngOnInit(): void {
+    this.isActive(this.route.url);
+  }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet])
     .pipe(
@@ -63,11 +70,29 @@ export class LayoutComponent {
 
 
 
-   isActive(name:string) {
-     this.menuItems().map(x => x.name == name ? x.active = true : x.active = false );
+  isActive(url: string) {
+    debugger
+    this.menuItems().map(x => x.route == url ? x.active = true : x.active = false);
   }
 
-  logout(){
+  logout() {
     this.route.navigate(['/auth/signin']);
+  }
+
+
+  profile(): void {
+    const dialogRef = this.dialog.open(InsertUpdateComponent, {
+      // data: {name: this.name(), animal: this.animal()},
+      minHeight: '444px',
+      minWidth: '444px',
+      maxHeight: '444px',
+      maxWidth: '444px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.isClose) {
+        console.log('The dialog was closed');
+      }
+    });
   }
 }

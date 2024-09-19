@@ -18,7 +18,21 @@ export  interface chartData {
 }
 
 export  interface tableListData {
-  nSno?:number;
-  cCusName:string;
-  cCusDes:string;
+  cName:string;
+  cNotes:string;
+}
+
+
+export interface updateUser {
+  id: number;
+  cName: string;
+  cEmail: string;
+  cPass: string;
+  bCheck: boolean;
+}
+
+export interface addCustomer {
+  id: number;
+  cName: string;
+  cNotes: string;
 }

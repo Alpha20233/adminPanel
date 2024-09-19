@@ -21,8 +21,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class ButtonComponent  {
   disabled: InputSignal<boolean> = input<boolean>(false);
-  red: InputSignal<boolean> = input<boolean>(false);
-  type = input<'solid' | 'light'>('solid');
+  type = input<'solid' | 'red'>('solid');
 
   private readonly baseClasses =
     'tw-w-full tw-justify-center tw-text-sm tw-rounded-lg tw-h-8  tw-border-none tw-shadow-none tw-px-3 tw-font-light';
@@ -30,11 +29,15 @@ export class ButtonComponent  {
 
   public readonly buttonClasses = computed(() => {
     const classes = [this.baseClasses];
-    if(this.red()) classes.push('tw-bg-red-500/95');
+    if(this.type() === 'red') classes.push('tw-bg-red-500/95');
     if (this.disabled()) classes.push('tw-pointer-events-none');
     return classes.join(' ');
   });
 
-  constructor() { }
+  constructor(private readonly primengConfig: PrimeNGConfig) {}
+
+  ngOnInit(): void {
+    this.primengConfig.ripple = true;
+  }
 
 }

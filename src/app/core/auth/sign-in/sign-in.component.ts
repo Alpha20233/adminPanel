@@ -20,6 +20,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { Router, RouterLink } from '@angular/router';
 import { CommService } from '../../../shared/services/common/comm.service';
 import { signin } from '../../models/auth.interface';
+import { IndexDBService } from '../../../shared/services/indexDB/index-db.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -39,12 +40,12 @@ import { signin } from '../../models/auth.interface';
   styleUrl: './sign-in.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignInComponent implements OnInit{
+export class SignInComponent implements OnInit {
   frm!: FormGroup;
   checked = model<boolean>(true);
   form_submit = signal<boolean>(false);
 
-  constructor(public readonly comm: CommService, private readonly router: Router) { }
+  constructor(public readonly comm: CommService, private readonly router: Router, private readonly indexDB: IndexDBService) { }
 
   ngOnInit(): void {
     this.frm = new FormGroup({
@@ -58,14 +59,22 @@ export class SignInComponent implements OnInit{
     });
   }
 
-  submit() {
+  async submit() {
+    debugger
     this.form_submit.set(true);
     if (this.frm.invalid) return;
     const formData: signin = this.frm.value;
-    if (true) {
+    const values = [formData];
+    const isAdmin = values.map((x) => x.cEmail === 'admin@gmail.com' && x.cPass === 'admin@123' ? true : false);
+    const res = await this.indexDB.getUserByEmail(formData.cEmail, formData.cPass ,isAdmin[0])
+    
+    if (res) {
       this.form_submit.set(false);
       this.router.navigate(['/dashboard']);
       this.frm.reset();
+    }else{
+     console.warn('Invalid Credentials');
+      
     }
   }
 }

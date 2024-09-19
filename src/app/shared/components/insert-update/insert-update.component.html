@@ -1,0 +1,20 @@
+<form class="tw-flex tw-flex-col tw-gap-y-3 tw-p-4 tw-h-screen" [formGroup]="frm">
+
+  <h3 class="tw-font-medium">{{this.data.cPermission === 'N' ? 'Add customer' : 'Edit customer'}}</h3>
+
+  <app-input formControlName="cName" inpLabel="Name" [isRequired]="true" class="tw-col-span-1" [maxLength]="80"
+    placeholder="Enter your fullname" [isValid]="{
+      cond1: frm.get('cName')?.hasError('required') ?? false,
+      form_submit: this.form_submit(),
+    }" validText="Enter your fullname"></app-input>
+
+
+  <app-input formControlName="cNotes" inpLabel="Notes" [isRequired]="true" class="tw-col-span-1" [maxLength]="120"
+    placeholder="Enter your notes" [isValid]="{
+      cond1: frm.get('cNotes')?.hasError('required') ?? false,
+      form_submit: this.form_submit(),
+    }" validText="Enter your notes"></app-input>
+
+  <app-button type="red" class="tw-mt-auto" (click)="this.data.cPermission == 'N' ?  addCust() : updateCust()">
+    {{this.data.cPermission === 'N' ? 'Add' : 'Update'}}</app-button>
+</form>

@@ -16,7 +16,7 @@ export interface signin {
 
 export interface signup {
   cName: string;
-  cEmail: boolean;
+  cEmail: string;
   cPass: string;
   bCheck: boolean;
 }

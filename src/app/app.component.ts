@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { IndexDBService } from './shared/services/indexDB/index-db.service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,23 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'adminPanel';
+
+  constructor(private readonly indexDB: IndexDBService) {
+  
+  }
+
+  ngOnInit(): void {
+    this.addAdmin();
+  }
+
+  addAdmin(){
+    const admin =  {
+      id: 1,
+      cName: 'admin',
+      cEmail: 'admin@gmail.com',
+      cPass: 'admin@123',
+      bCheck: true
+    }
+    this.indexDB.addAdmin(admin)
+  }
 }

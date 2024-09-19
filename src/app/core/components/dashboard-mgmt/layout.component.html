@@ -1,4 +1,6 @@
-<mat-sidenav-container class="sidenav-container">
+@let isHandset = isHandset$ | async;
+
+<mat-sidenav-container class="sidenav-container" >
     <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
         [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
         <!-- <mat-toolbar>Menu</mat-toolbar> -->
@@ -7,7 +9,7 @@
                 <div class="tw-flex tw-flex-col tw-gap-y-2 tw-mt-5">
                     @for(m of menuItems();track m){
                     <div
-                        class="tw-flex tw-items-center tw-gap-x-2 xl:tw-cursor-pointer hover:tw-bg-graies-100 tw-p-2 tw-px-4 tw-rounded-md tw-transition-all tw-ease-in tw-duration-200 tw-group " (click)="isActive(m.name)" [ngClass]="{'tw-bg-graies-100/70': m.active}" [routerLink]="m.route">
+                        class="tw-flex tw-items-center tw-gap-x-2 xl:tw-cursor-pointer hover:tw-bg-graies-100 tw-p-2 tw-px-4 tw-rounded-md tw-transition-all tw-ease-in tw-duration-200 tw-group tw-outline-none" (click)="isActive(m.route)" [ngClass]="{'tw-bg-graies-100/70': m.active}" [routerLink]="m.route" (click)="isHandset && drawer.close()">
                         <icon [name]="m['iconName']" addCls="!tw-font-bold tw-group-hover:tw-text-red-500 "></icon>
                         <span class="tw-font-medium tw-group-hover:tw-text-red-500 tw-text-sm">{{m['name']}}</span>
                     </div>
@@ -16,7 +18,7 @@
 
                 <div class="tw-flex tw-flex-col tw-gap-y-2">
                     <div
-                        class="tw-flex tw-items-center tw-gap-x-2 xl:tw-cursor-pointer hover:tw-bg-graies-100 tw-p-2 tw-px-4 tw-rounded-md tw-transition-all tw-ease-in tw-duration-200 ">
+                        class="tw-flex tw-items-center tw-gap-x-2 xl:tw-cursor-pointer hover:tw-bg-graies-100 tw-p-2 tw-px-4 tw-rounded-md tw-transition-all tw-ease-in tw-duration-200 " (click)="profile()">
                         <div class="tw-relative tw-w-6 tw-h-6 tw-rounded-full tw-overflow-hidden">
                             <img ngSrc="https://plus.unsplash.com/premium_photo-1678197937465-bdbc4ed95815?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                 fill priority draggable="false" decoding="async"
@@ -44,7 +46,7 @@
             }
             <div
                 class="tw-bg-white tw-h-full tw-w-full tw-border-b-2 tw-border-t-0 tw-border-l-0 tw-border-r-0 tw-border-solid tw-border-stroke-100 tw-flex tw-justify-between tw-items-center tw-px-4 ">
-                <span class="tw-text-sm tw-font-bold">Dashboard</span>
+                <span class="tw-text-sm tw-font-bold ">Dashboard</span>
                 <div class="tw-flex tw-gap-x-6">
                     <p-dropdown [options]="dropOpt()" optionLabel="name" placeholder="Select a project" />
 
@@ -59,7 +61,7 @@
             </div>
         </mat-toolbar>
         <!-- Add Content Here -->
-         <div class="tw-h-fit tw-w-full tw-bg-graies-100">
+         <div class="tw-h-auto tw-min-h-[calc(100%_-_48px)] tw-w-full tw-bg-graies-100">
              <router-outlet></router-outlet>
          </div>
     </mat-sidenav-content>

@@ -184,3 +184,7 @@ body {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
+
+.mat-mdc-dialog-container .mat-mdc-dialog-surface{
+  border-radius: 3% !important;
+}

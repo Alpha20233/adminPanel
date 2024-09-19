@@ -1,1 +1,7 @@
-<p>customer works!</p>
+<div class="tw-p-4 tw-flex tw-flex-col tw-gap-y-3">
+    <div class="tw-flex tw-items-center tw-justify-between tw-w-full">
+        <h1 class="tw-m-0 tw-text-sm tw-font-semibold">Customer management</h1>
+        <app-button type="red" (click)="addCust()">Add customer</app-button>
+    </div>
+    <table-list [isRefresh]="isRefresh()"></table-list>
+</div>

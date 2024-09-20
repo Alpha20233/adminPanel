@@ -1,0 +1,7 @@
+<div class="tw-p-4 tw-flex tw-flex-col tw-gap-y-3">
+    <div class="tw-flex tw-items-center tw-justify-between tw-w-full">
+        <h1 class="tw-m-0 tw-text-sm tw-font-semibold">User management</h1>
+        <app-button type="red" (click)="addUser()">Add User</app-button>
+    </div>
+    <table-list [isRefresh]="isRefresh()" [tabRows]="tabRows()" [tabData]="'getAllUsers'"></table-list>
+</div>

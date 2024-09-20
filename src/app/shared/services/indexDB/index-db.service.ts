@@ -33,6 +33,10 @@ export class IndexDBService {
     try {
       const result = await firstValueFrom(from(this.dbService.add('users', user)));
       console.log('User added successfully:', result);
+      const res =  JSON.parse(localStorage.getItem('userDetail') || '{}');
+      if(res.cRole !== 'admin'){
+        localStorage.setItem('userDetail', JSON.stringify(user));
+      }
       return result;
     } catch (error) {
       console.error('Error adding user:', error);
@@ -41,12 +45,13 @@ export class IndexDBService {
   }
 
 
-  async getUserByEmail(email: string, password: string, isAdmin: boolean = false): Promise<signup | boolean> {
+  async getUserByEmail(email: string, password: string, isAdmin: boolean = false): Promise<any> {
+    debugger
     try {
       const store = isAdmin ? 'admin' : 'users';
       const user = await firstValueFrom(from(this.dbService.getByIndex(store, 'cEmail', email))) as signup;
-      console.warn('user', user);
 
+      console.warn('user', user);
       if (user && user.cPass === password) {
         return user;
       } else {
@@ -66,6 +71,25 @@ export class IndexDBService {
     return await firstValueFrom(this.dbService.getAll('users'));
   }
 
+  async updateUser(id: number, detail: signup): Promise<boolean> {
+    const res = await firstValueFrom(this.dbService.update('users', { id, ...detail }));
+    if (res) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async deleteUser(id: number): Promise<boolean> {
+    const res = await firstValueFrom(this.dbService.delete('users', id));
+
+    if (res) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
 
   //Customers
@@ -80,9 +104,6 @@ export class IndexDBService {
     }
   }
 
-  async getCustomerById(id: number) {
-    return await firstValueFrom(this.dbService.getByKey('customers', id));
-  }
 
   async getAllCustomers() {
     return await firstValueFrom(this.dbService.getAll('customers'));
@@ -102,9 +123,45 @@ export class IndexDBService {
     }
   }
 
-  async addAdmin(admin: signup) {
-    await firstValueFrom(this.dbService.add('admin', admin));
+  async addAdmin(admin: any) {
+    try {
+      const existingAdmin = await firstValueFrom(this.dbService.getByKey('admin', admin.id));
+  
+      if (existingAdmin) {
+        console.warn('Admin with this ID already exists:', existingAdmin);
+        return;  
+      }
+
+      const res = await firstValueFrom(this.dbService.add('admin', admin));
+      console.warn('Admin added successfully:', res);
+    } catch (error) {
+      console.error('Error adding admin:', error);
+    }
   }
+
+  async updateAdmin(detail: any) {
+    debugger
+    const res = await firstValueFrom(this.dbService.update('admin', detail));
+    console.warn('admin updated',res);
+    localStorage.setItem('userDetail', JSON.stringify(res));
+    if(res){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  async updateProfile(id: number, detail: signup): Promise<any> {
+    const res = await firstValueFrom(this.dbService.update('users', { id, ...detail }));
+    if (res) {
+      localStorage.setItem('userDetail', JSON.stringify(res));
+      return res;
+    } else {
+      return false;
+    }
+  }
+
+
 
 
 }

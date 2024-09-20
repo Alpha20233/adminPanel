@@ -8,7 +8,7 @@ import { DBConfig } from 'ngx-indexed-db';
 
 const dbConfig: DBConfig = {
   name: 'Go-tech',
-  version: 2,
+  version: 3,
   objectStoresMeta: [
     {
       store: 'users',
@@ -22,12 +22,13 @@ const dbConfig: DBConfig = {
     } ,
     {
       store: 'admin',
-      storeConfig: { keyPath: 'id', autoIncrement: true },
+      storeConfig: { keyPath: 'id', autoIncrement: false },
       storeSchema: [
         { name: 'cName', keypath: 'cName', options: { unique: false } },
         { name: 'cEmail', keypath: 'cEmail', options: { unique: false } },
         { name: 'cPass', keypath: 'cPass', options: { unique: false } },
-        { name: 'bCheck', keypath: 'bCheck', options: { unique: false } }
+        { name: 'bCheck', keypath: 'bCheck', options: { unique: false } },
+        { name: 'cRole', keypath: 'cRole', options: { unique: false } },
       ]
     },
     {

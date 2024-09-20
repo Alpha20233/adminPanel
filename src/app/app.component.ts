@@ -13,21 +13,27 @@ export class AppComponent {
   title = 'adminPanel';
 
   constructor(private readonly indexDB: IndexDBService) {
-  
+
   }
 
   ngOnInit(): void {
     this.addAdmin();
   }
 
-  addAdmin(){
-    const admin =  {
+  addAdmin() {
+    const userDetail = JSON.parse(localStorage.getItem('userDetail') || '{}');
+    const admin = {
       id: 1,
       cName: 'admin',
       cEmail: 'admin@gmail.com',
       cPass: 'admin@123',
-      bCheck: true
+      bCheck: true,
+      cRole: 'admin'
     }
-    this.indexDB.addAdmin(admin)
+    if (userDetail.cRole) {
+      return;
+    } else {
+      this.indexDB.addAdmin(admin);
+    }
   }
 }

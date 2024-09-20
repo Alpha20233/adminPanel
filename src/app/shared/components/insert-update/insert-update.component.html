@@ -1,20 +1,49 @@
+@if(this.data.cPermission == 'CN' || this.data.cPermission == 'CE'){
 <form class="tw-flex tw-flex-col tw-gap-y-3 tw-p-4 tw-h-screen" [formGroup]="frm">
-
-  <h3 class="tw-font-medium">{{this.data.cPermission === 'N' ? 'Add customer' : 'Edit customer'}}</h3>
+  <h3 class="tw-font-medium">{{this.data.cPermission === 'CN' ? 'Add customer' : this.data.cPermission === 'CE' ? 'Edit customer' : ''}}</h3>
 
   <app-input formControlName="cName" inpLabel="Name" [isRequired]="true" class="tw-col-span-1" [maxLength]="80"
     placeholder="Enter your fullname" [isValid]="{
-      cond1: frm.get('cName')?.hasError('required') ?? false,
-      form_submit: this.form_submit(),
-    }" validText="Enter your fullname"></app-input>
+        cond1: frm.get('cName')?.hasError('required') ?? false,
+        form_submit: this.form_submit(),
+      }" validText="Enter your fullname"></app-input>
 
 
   <app-input formControlName="cNotes" inpLabel="Notes" [isRequired]="true" class="tw-col-span-1" [maxLength]="120"
     placeholder="Enter your notes" [isValid]="{
-      cond1: frm.get('cNotes')?.hasError('required') ?? false,
-      form_submit: this.form_submit(),
-    }" validText="Enter your notes"></app-input>
+        cond1: frm.get('cNotes')?.hasError('required') ?? false,
+        form_submit: this.form_submit(),
+      }" validText="Enter your notes"></app-input>
 
-  <app-button type="red" class="tw-mt-auto" (click)="this.data.cPermission == 'N' ?  addCust() : updateCust()">
-    {{this.data.cPermission === 'N' ? 'Add' : 'Update'}}</app-button>
+  <app-button type="red" class="tw-mt-auto"
+    (click)="this.data.cPermission == 'CN' ?  addUpdate('add') : this.data.cPermission == 'CE' ? addUpdate('update') : ''">
+    {{this.data.cPermission === 'CN' ? 'Add' : this.data.cPermission === 'CE' ? 'Update' : ''}}</app-button>
 </form>
+}@else if(this.data.cPermission == 'P' || this.data.cPermission == 'UN' || this.data.cPermission == 'UE'){
+<form class="tw-flex tw-flex-col tw-gap-y-2 tw-p-4 tw-h-screen" [formGroup]="frm2">
+  <h3 class="tw-font-medium">{{this.data.cPermission == 'P' ? 'Update profile' : this.data.cPermission == 'UN' ? 'Add User' : 'Update user'}}</h3>
+  <app-input formControlName="cName" inpLabel="Name" [isRequired]="true" class="tw-col-span-1" [maxLength]="80"
+    placeholder="Enter your fullname" [isValid]="{
+    cond1: frm2.get('cName')?.hasError('required') ?? false,
+    cond2: frm2.get('cName')?.hasError('pattern') ?? false,
+    form_submit: this.form_submit2(),
+  }" validText="Enter your fullname"></app-input>
+
+
+  <app-input formControlName="cEmail" inpLabel="Email" [isRequired]="true" class="tw-col-span-1" [maxLength]="80"
+    placeholder="Enter your email address" [isValid]="{
+    cond1: frm2.get('cEmail')?.hasError('required') ?? false,
+    cond2: frm2.get('cEmail')?.hasError('pattern') ?? false,
+    form_submit: this.form_submit2(),
+  }" validText="Enter your email address" validText2="Enter a valid email"></app-input>
+
+  <app-input formControlName="cPass" inpLabel="Password" [isRequired]="true" type="password" class="tw-col-span-1"
+    placeholder="Enter your password" [icon]="{ name: 'eye', type: 'primary' }" [isValid]="{
+    cond1: frm2.get('cPass')?.hasError('required') ?? false,
+    form_submit: this.form_submit2(),
+  }" validText="Enter your password"></app-input>
+
+  <app-button type="red" class="tw-mt-auto" (click)=" this.data.cPermission == 'P' ? updateProfile() : this.data.cPermission == 'UN' ? addUpdateUser('add') : addUpdateUser('update')">
+    {{this.data.cPermission == 'P' ? 'Update' : this.data.cPermission == 'UN' ? 'Add user' : 'Update user'}}</app-button>
+</form>
+}

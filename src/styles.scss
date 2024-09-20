@@ -32,9 +32,10 @@ body {
   }
 
   .p-datepicker {
-    @media only screen and  (min-width: 1024px) {
+    @media only screen and (min-width: 1024px) {
       margin-top: 1rem !important;
     }
+
     td,
     th {
       padding: 0.25rem !important;
@@ -73,14 +74,14 @@ body {
   }
 
   p-dropdown {
-    
+
     .p-inputwrapper {
       height: 2rem;
       border-width: 2px !important;
       padding: 0 0.5rem;
       min-width: 10rem;
 
-      &:hover{
+      &:hover {
         border-color: #CEDAE9 !important;
         box-shadow: none !important;
       }
@@ -114,15 +115,55 @@ body {
     }
   }
 
-  p-chart{
-    canvas{
+  p-chart {
+    canvas {
       width: 200px !important;
       height: 200px !important;
+
       @media only screen and (max-width: 768px) {
         width: 160px !important;
         height: 160px !important;
       }
     }
+  }
+
+  .p-datatable {
+    .p-datatable-wrapper {
+      border-radius: 0.5rem !important;
+
+      .p-datatable-table {
+        min-width: max-content !important;
+      }
+
+      th,
+      td {
+        font-size: 14px !important;
+      }
+
+      .p-icon {
+        height: 12px !important;
+        width: 12px !important;
+      }
+
+
+    }
+
+    .p-paginator .p-paginator-pages .p-paginator-page {
+      min-width: 2rem !important;
+      height: 2rem !important;
+    }
+
+    .p-paginator-bottom {
+      row-gap: 0.5rem !important;
+      border-radius: 0 0.5rem 0.5rem 0.5rem !important;
+    }
+
+    .p-paginator-element {
+      min-width: 2rem !important;
+      height: 2rem !important;
+    }
+
+
   }
 }
 
@@ -185,6 +226,6 @@ body {
   }
 }
 
-.mat-mdc-dialog-container .mat-mdc-dialog-surface{
+.mat-mdc-dialog-container .mat-mdc-dialog-surface {
   border-radius: 3% !important;
 }

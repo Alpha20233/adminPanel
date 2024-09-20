@@ -64,17 +64,20 @@ export class SignInComponent implements OnInit {
     this.form_submit.set(true);
     if (this.frm.invalid) return;
     const formData: signin = this.frm.value;
+    
     const values = [formData];
     const isAdmin = values.map((x) => x.cEmail === 'admin@gmail.com' && x.cPass === 'admin@123' ? true : false);
+    console.warn('admin', isAdmin[0]);
     const res = await this.indexDB.getUserByEmail(formData.cEmail, formData.cPass ,isAdmin[0])
-    
     if (res) {
+      if(isAdmin[0]){
+        localStorage.setItem('userDetail', JSON.stringify(res));
+      }
       this.form_submit.set(false);
       this.router.navigate(['/dashboard']);
       this.frm.reset();
     }else{
      console.warn('Invalid Credentials');
-      
     }
   }
 }

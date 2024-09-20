@@ -13,6 +13,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MenuItem } from '../../models/dashboard.interface';
 import { InsertUpdateComponent } from '../../../shared/components/insert-update/insert-update.component';
 import { MatDialog } from '@angular/material/dialog';
+import { signup } from '../../models/auth.interface';
 
 @Component({
   selector: 'app-layout',
@@ -36,10 +37,11 @@ export class LayoutComponent {
     [
       { route: '/dashboard', name: 'Dashboard', iconName: 'home', active: true },
       { route: '/dashboard/customer', name: 'Customers', iconName: 'building' },
+      { route: '/dashboard/users', name: 'Users', iconName: 'users' },
       { route: '/dashboard/projects', name: 'Projects', iconName: 'folder' },
       { route: '/dashboard/services', name: 'Services', iconName: 'list' },
-      { route: '/dashboard/time-entries', name: 'Time Entries', iconName: 'clock' },
-      { route: '/dashboard/time-memb', name: 'Time Members', iconName: 'users' },
+      { route: '/dashboard/time-entries', name: 'Team Entries', iconName: 'clock' },
+      { route: '/dashboard/time-memb', name: 'Team Members', iconName: 'users' },
       { route: '/dashboard/teams', name: 'Teams', iconName: 'users' },
       { route: '/dashboard/rate', name: 'Hourly Rates', iconName: 'euro' },
       { route: '/dashboard/absenseReq', name: 'Absense requests', iconName: 'date' },
@@ -52,6 +54,9 @@ export class LayoutComponent {
     ]
   )
 
+  userDetail = signal<signup>({ cEmail: '', cName: '', cPass: '', bCheck: false })
+
+
   @ViewChild('drawer') drawer: any;
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -60,6 +65,7 @@ export class LayoutComponent {
 
   ngOnInit(): void {
     this.isActive(this.route.url);
+    this.currUser();
   }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet])
@@ -77,12 +83,16 @@ export class LayoutComponent {
 
   logout() {
     this.route.navigate(['/auth/signin']);
+    localStorage.clear();
   }
 
+  currUser() {
+    this.userDetail.set(JSON.parse(localStorage.getItem('userDetail') || '{}'));
+  }
 
   profile(): void {
     const dialogRef = this.dialog.open(InsertUpdateComponent, {
-      // data: {name: this.name(), animal: this.animal()},
+      data: { cPermission: 'P', data: this.userDetail(), isClose: false },
       minHeight: '444px',
       minWidth: '444px',
       maxHeight: '444px',
@@ -90,8 +100,8 @@ export class LayoutComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.isClose) {
-        console.log('The dialog was closed');
+      if (result?.isClose) {
+        this.currUser();
       }
     });
   }

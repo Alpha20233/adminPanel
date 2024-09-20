@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { IconComponent } from "../icon/icon.component";
 
 @Component({
@@ -11,7 +11,13 @@ import { IconComponent } from "../icon/icon.component";
 })
 export class SearchComponent {
   placeholder = input.required<string>();
+  inptValue = output<string>();
   maxlength = input<number>(80);
 
-  constructor() {}
+  constructor() { }
+
+  inputValue(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.inptValue.emit(target.value);
+  }
 }

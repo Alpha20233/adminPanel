@@ -1,11 +1,11 @@
 <div class="tw-p-4 tw-flex tw-flex-col tw-gap-y-5">
     <div
-        class="tw-bg-white tw-rounded-lg tw-border tw-border-solid tw-border-stroke-100 tw-w-full xl:tw-h-12 tw-flex tw-items-center tw-justify-between tw-px-4 md:tw-flex-col xl:tw-flex-row md:tw-h-auto md:tw-pb-4 xl:tw-pb-0 md:tw-gap-y-1 xl:tw-gap-y-0">
-        <div class="tw-flex tw-items-center tw-gap-x-6 md:tw-justify-between md:tw-w-full xl:tw-justify-normal">
+        class="tw-bg-white tw-rounded-lg tw-border tw-border-solid tw-border-stroke-100 tw-w-full xl:tw-h-12 tw-flex tw-items-center tw-justify-between tw-px-4 max-md:tw-flex-col xl:tw-flex-row max-md:tw-h-auto max-md:tw-pb-4 xl:tw-pb-0 max-md:tw-gap-y-1 xl:tw-gap-y-0">
+        <div class="tw-flex tw-items-center tw-gap-x-6 max-md:tw-justify-between max-md:tw-w-full xl:tw-justify-normal">
             <h2 class="tw-text-sm tw-font-semibold">Filter:</h2>
             <div class="tw-flex tw-items-center tw-gap-x-5">
                 @for(f of fillItems();track f){
-                <div class="tw-flex tw-gap-x-2 tw-items-center *:tw-text-text-100 xl:tw-cursor-pointer" >
+                <div class="tw-flex tw-gap-x-2 tw-items-center *:tw-text-text-100 xl:tw-cursor-pointer">
                     <icon [name]="f.iconName" addCls="!tw-font-bold !tw-text-sm"></icon>
                     <span class="tw-text-xs tw-font-medium">{{f.name}}</span>
                 </div>
@@ -13,9 +13,9 @@
             </div>
         </div>
 
-        <div class="tw-flex tw-gap-x-2 tw-items-center md:tw-w-full md:tw-justify-start xl:tw-justify-end">
+        <div class="tw-flex tw-gap-x-2 tw-items-center max-md:tw-w-full max-md:tw-justify-start xl:tw-justify-end">
             <datepicker></datepicker>
-            <search placeholder="Search.."></search>
+            <search placeholder="Search.." (inptValue)="searchValue.set($event)"></search>
         </div>
     </div>
 
@@ -27,34 +27,41 @@
     </div>
 
     <div>
-        <div class="tw-grid xl:tw-grid-cols-4 md:tw-grid-cols-2 xl:tw-gap-x-3 md:tw-gap-3">
+        <div class="tw-grid xl:tw-grid-cols-4 max-md:tw-grid-cols-2 xl:tw-gap-x-3 max-md:tw-gap-3">
             @defer (on viewport) {
-                <chart-view class="tw-col-span-1" heading="total hours" [dataCount]="[30,70]" [bgColor]="['#FF5A42','#2ECBA5']" [hovBgColor]="['#ff7864','#6fe6c6']" [chartData]="[{title:'Non Billable Hours',value:'29:26'},{title:'Billable Hours',value:'49:55'}]"></chart-view>
+            <chart-view class="tw-col-span-1" heading="total hours" [dataCount]="[30,70]"
+                [bgColor]="['#FF5A42','#2ECBA5']" [hovBgColor]="['#ff7864','#6fe6c6']"
+                [chartData]="[{title:'Non Billable Hours',value:'29:26'},{title:'Billable Hours',value:'49:55'}]"></chart-view>
             }@placeholder {
-                <div>
-                    loading...
-                </div>
+            <div>
+                loading...
+            </div>
             }
 
             @defer (on viewport) {
-                <chart-view class="tw-col-span-1" heading="total cost" [dataCount]="[30,70]" [bgColor]="['#FF5A42','#2ECBA5']" [hovBgColor]="['#ff7864','#6fe6c6']" [chartData]="[{title:'Non Billable Hours',value:'29:26'},{title:'Billable Hours',value:'49:55'}]"></chart-view>
+            <chart-view class="tw-col-span-1" heading="total cost" [dataCount]="[30,70]"
+                [bgColor]="['#FF5A42','#2ECBA5']" [hovBgColor]="['#ff7864','#6fe6c6']"
+                [chartData]="[{title:'Non Billable Hours',value:'29:26'},{title:'Billable Hours',value:'49:55'}]"></chart-view>
             }@placeholder {
-                <div>
-                    loading...
-                </div>
+            <div>
+                loading...
+            </div>
             }
 
             @defer (on viewport) {
-                <chart-view class="tw-col-span-1" heading="project distribution" [dataCount]="[30,70]" [bgColor]="['#FF5A42','#2ECBA5']" [hovBgColor]="['#ff7864','#6fe6c6']" [chartData]="[{title:'Non Billable Hours',value:'29:26'},{title:'Billable Hours',value:'49:55'}]"></chart-view>
+            <chart-view class="tw-col-span-1" heading="project distribution" [dataCount]="[30,70]"
+                [bgColor]="['#FF5A42','#2ECBA5']" [hovBgColor]="['#ff7864','#6fe6c6']"
+                [chartData]="[{title:'Non Billable Hours',value:'29:26'},{title:'Billable Hours',value:'49:55'}]"></chart-view>
             }@placeholder {
-                <div>
-                    loading...
-                </div>
+            <div>
+                loading...
+            </div>
             }
 
 
             <div class="tw-col-span-1 tw-grid tw-grid-cols-1 tw-gap-y-3">
-                <div class="tw-bg-white tw-col-span-1 tw-w-full tw-h-full tw-border tw-border-solid tw-border-stroke-100  tw-rounded-md tw-p-3 tw-flex tw-flex-col tw-justify-between">
+                <div
+                    class="tw-bg-white tw-col-span-1 tw-w-full tw-h-full tw-border tw-border-solid tw-border-stroke-100  tw-rounded-md tw-p-3 tw-flex tw-flex-col tw-justify-between">
                     <span class="tw-flex tw-items-center tw-gap-x-2">
                         <icon name="building" addCls="!tw-text-red-500 "></icon>
                         <span class="tw-uppercase tw-text-text-100 tw-font-medium tw-text-xs">Total customers</span>
@@ -62,7 +69,8 @@
                     <h2 class="tw-text-end tw-m-0">6</h2>
                 </div>
 
-                <div class="tw-bg-white tw-col-span-1 tw-w-full tw-h-full tw-border tw-border-solid tw-border-stroke-100  tw-rounded-md tw-p-3 tw-flex tw-flex-col tw-justify-between">
+                <div
+                    class="tw-bg-white tw-col-span-1 tw-w-full tw-h-full tw-border tw-border-solid tw-border-stroke-100  tw-rounded-md tw-p-3 tw-flex tw-flex-col tw-justify-between">
                     <span class="tw-flex tw-items-center tw-gap-x-2">
                         <icon name="folder" addCls="!tw-text-red-500 "></icon>
                         <span class="tw-uppercase tw-text-text-100 tw-font-medium tw-text-xs">Total projects</span>
@@ -70,7 +78,8 @@
                     <h2 class="tw-text-end tw-m-0">5</h2>
                 </div>
 
-                <div class="tw-bg-white tw-col-span-1 tw-w-full tw-h-full tw-border tw-border-solid tw-border-stroke-100  tw-rounded-md tw-p-3 tw-flex tw-flex-col tw-justify-between">
+                <div
+                    class="tw-bg-white tw-col-span-1 tw-w-full tw-h-full tw-border tw-border-solid tw-border-stroke-100  tw-rounded-md tw-p-3 tw-flex tw-flex-col tw-justify-between">
                     <span class="tw-flex tw-items-center tw-gap-x-2">
                         <icon name="users" addCls="!tw-text-red-500 "></icon>
                         <span class="tw-uppercase tw-text-text-100 tw-font-medium tw-text-xs">Total users</span>
@@ -82,6 +91,6 @@
     </div>
 
     <div>
-        <table-list></table-list>
+        <table-list [tabRows]="tabRows()"  [tabData]="'getAllCustomers'" [searchValue]="searchValue()"></table-list>
     </div>
 </div>

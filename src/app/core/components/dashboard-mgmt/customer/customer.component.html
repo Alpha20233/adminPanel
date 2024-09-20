@@ -3,5 +3,8 @@
         <h1 class="tw-m-0 tw-text-sm tw-font-semibold">Customer management</h1>
         <app-button type="red" (click)="addCust()">Add customer</app-button>
     </div>
-    <table-list [isRefresh]="isRefresh()"></table-list>
+    <table-list
+        [tabRows]="tabRows()"
+        [tabData]="'getAllCustomers'"
+        [isRefresh]="isRefresh()" [rowsCount]="10"></table-list>
 </div>

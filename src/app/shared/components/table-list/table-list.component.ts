@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, input, signal } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { addCustomer, tableListData } from '../../../core/models/dashboard.interface';
+import { addCustomer, permissionType, sortOrder, tableListData, tabRows, UpdateData } from '../../../core/models/dashboard.interface';
 import { IconComponent } from '../icon/icon.component';
 import { IndexDBService } from '../../services/indexDB/index-db.service';
 import { signup } from '../../../core/models/auth.interface';
@@ -18,30 +18,48 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class TableListComponent {
   isRefresh = input<boolean>(false);
+  tabRows = input.required<tabRows[]>();
+  tabData = input.required<string>();
+  searchValue = input<string>('');
+  rowsCount = input<number>(5);
+
+  sortOrder = signal<sortOrder>('asc');
   data = signal<any[]>([]);
+
+
+  filteredData = computed(() => {
+    if (this.searchValue()) {
+      return this.data().filter((item) =>
+        item.cName.toLowerCase().includes(this.searchValue().toLowerCase())
+      );
+    }
+    return this.data();
+  });
 
 
   constructor(private readonly indexDB: IndexDBService, private readonly cdr: ChangeDetectorRef, private readonly dialog: MatDialog) {
     effect(() => {
       if (this.isRefresh() || !this.isRefresh()) {
-        this.getAllCustomers();
+        this.getAllListData();
       }
     });
   }
 
+
   ngOnInit(): void {
-    this.getAllCustomers();
+    // this.getAllListData();
   }
 
-  async getAllCustomers() {
-    const res = await this.indexDB.getAllCustomers();
+  async getAllListData() {
+    const method = this.indexDB[this.tabData() as keyof IndexDBService] as Function;
+    const res = await method.call(this.indexDB);
     this.data.set(res);
   }
 
 
-  async updateCustomer(data: addCustomer) {
+  async update(data: UpdateData, cPermission: permissionType) {
     const dialogRef = this.dialog.open(InsertUpdateComponent, {
-      data: { isClose: false, cPermission: 'E', data: data },
+      data: { isClose: false, cPermission: cPermission, data: data },
       minHeight: '444px',
       minWidth: '444px',
       maxHeight: '444px',
@@ -49,19 +67,32 @@ export class TableListComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.isClose) {
-        this.getAllCustomers();
+      if (result?.isClose) {
+        this.getAllListData();
       }
     });
   }
 
 
-  async deleteCustomer(id: number) {
-    const res = await this.indexDB.deleteCustomer(id);
+  async delete(id: number, name: string) {
+    const method = await this.indexDB[name as keyof IndexDBService] as Function;
+    const res = await method.call(this.indexDB, id, name);
     if (res) {
-      this.getAllCustomers();
+      this.getAllListData();
     }
   }
+
+
+  sort() {
+    this.data.update(data => {
+      const sortedData = [...data].sort((a, b) => 
+        this.sortOrder() === 'asc' ? b.id - a.id : a.id - b.id
+      );
+      this.sortOrder.set(this.sortOrder() === 'asc' ? 'desc' : 'asc');
+      return sortedData;
+    });
+  }
+
 
 
 }

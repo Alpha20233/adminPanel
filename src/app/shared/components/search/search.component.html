@@ -1,14 +1,13 @@
 <div class="max-w-sm">
     <div class="tw-relative">
         <div class="tw-relative">
-            <div
-                class="tw-absolute tw-inset-y-0 tw-start-0 tw-flex tw-items-center tw-pointer-events-none  tw-ps-3.5">
-                <icon name="search"  addCls="tw-text-stroke-100"></icon>
+            <div class="tw-absolute tw-inset-y-0 tw-start-0 tw-flex tw-items-center tw-pointer-events-none  tw-ps-3.5">
+                <icon name="search" addCls="tw-text-stroke-100"></icon>
             </div>
             <input
                 class="tw-py-1 tw-ps-10 tw-pe-4 tw-outline-none tw-block tw-w-full tw-border-stroke-100/70 tw-border-2 tw-border-solid tw-rounded-lg tw-max-w-[12rem] tw-text-sm  disabled:tw-opacity-50 disabled:tw-pointer-events-none placeholder:tw-text-gray-500 placeholder:tw-text-sm "
-                type="text" role="combobox" aria-expanded="false" [placeholder]="placeholder()" [maxLength]="maxlength()"
-                >
+                type="text" role="combobox" aria-expanded="false" [placeholder]="placeholder()"
+                [maxLength]="maxlength()" (input)="inputValue($event)">
         </div>
     </div>
 </div>

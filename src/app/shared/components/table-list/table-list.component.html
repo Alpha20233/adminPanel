@@ -1,24 +1,55 @@
-<p-table [value]="data()" [tableStyle]="{ 'min-width': '50rem' }">
+
+
+<p-table [value]="filteredData()"  [rowHover]="true" [rows]="rowsCount()"
+    [paginator]="true">
     <ng-template pTemplate="header">
         <tr>
-            <th>No.</th>
-            <th>Customer Name</th>
-            <th>Description</th>
-            <th>Action</th>
+            @for(r of tabRows();track r){
+            <th [pSortableColumn]="r.name" style="width:20%" (click)="sort()">{{r.name}} <p-sortIcon [field]="r.name"></p-sortIcon></th>
+            }
+
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-list let-i="rowIndex">
 
         <tr>
-            <td>{{ i+1 }}</td>
+            @if(tabData() == 'getAllCustomers'){
+            <td>
+                <span
+                    class="tw-w-7 tw-h-7 tw-rounded-lg tw-flex tw-items-center tw-justify-center tw-bg-gray-100 tw-text-black">{{
+                    i+1 }}</span>
+            </td>
             <td>{{ list.cName }}</td>
             <td>{{ list.cNotes }}</td>
             <td>
                 <div class="tw-flex tw-items-center tw-gap-x-3">
-                    <icon name="edit" (click)="updateCustomer(list)"></icon>
-                    <icon name="delete" (click)="deleteCustomer(list.id)"></icon>
+                    <icon name="edit" addCls="hover:!tw-text-blue-500 tw-transition-all tw-ease-in tw-duration-200"
+                        (click)="update(list,'CE')"></icon>
+                    <icon name="delete" addCls="hover:!tw-text-red-500 tw-transition-all tw-ease-in tw-duration-200"
+                        (click)="delete(list.id,'deleteCustomer')"></icon>
                 </div>
             </td>
+            }@else if (tabData() == 'getAllUsers') {
+            <td>
+                <span
+                    class="tw-w-7 tw-h-7 tw-rounded-lg tw-flex tw-items-center tw-justify-center tw-bg-gray-100 tw-text-black">{{
+                    i+1 }}</span>
+            </td>
+            <td>{{ list.cName }}</td>
+            <td>{{ list.cEmail}}</td>
+            <td>
+                <div class="tw-flex tw-items-center tw-gap-x-3">
+                    <icon name="edit" addCls="hover:!tw-text-blue-500 tw-transition-all tw-ease-in tw-duration-200"
+                        (click)="update(list,'UE')"></icon>
+                    <icon name="delete" addCls="hover:!tw-text-red-500 tw-transition-all tw-ease-in tw-duration-200"
+                        (click)="delete(list.id,'deleteUser')"></icon>
+                </div>
+            </td>
+            }@else {
+                <td>
+                    <span>No search result found</span>
+                </td>
+            }
         </tr>
 
     </ng-template>
